@@ -58,17 +58,24 @@ function createLineData(len, p, d, posPercent, lossPercent) {
 function createLineDataSeries(seriesLen, len, p, d, posPercent, lossPercent) {
   const series = []
   const dataAvg = []
+  const dataMin = []
   for (let i = 0; i < seriesLen; i++) {
     series.push(createLineData(len, p, d, posPercent, lossPercent))
   }
   for (let i = 0; i < len; i++) {
     let sum = 0
-    series.forEach(s => { sum = sum + s.list[i] })
+    let min = Infinity
+    series.forEach(s => {
+      sum = sum + s.list[i]
+      min = Math.min(min, s.list[i])
+    })
+    dataMin.push(min)
     dataAvg[i] = sum / series.length
   }
   return {
     series,
     dataAvg,
+    dataMin
   }
 }
 
@@ -135,7 +142,7 @@ const controls2 = {
     const labels = []
     for (let i = 0; i < 100; i++) {
       const series = createLineDataSeries(this.seriesLen, this.len, this.p, this.d, i / 100)
-      const lastAvg = series.dataAvg[series.dataAvg.length - 1]
+      const lastAvg = series.dataMin[series.dataMin.length - 1]
       lastAvgs[i] = lastAvg
       seriesCollections.push(series)
       labels.push(i + '')
