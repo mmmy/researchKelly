@@ -1,6 +1,7 @@
 Chart.defaults.global.animation.duration = 0
 const ctx = document.getElementById('chart1')
 const infoSpan = document.getElementById('info')
+const infoSpan2 = document.getElementById('info2')
 
 const chart1 = new Chart(ctx, {
   type: 'line',
@@ -142,6 +143,8 @@ const controls2 = {
     chart2.data.labels = labels
     chart2.data.datasets[0].data = lastAvgs
     chart2.update()
+
+    infoSpan2.innerText = this.p - (1 - this.p) / this.d
   }
 }
 
